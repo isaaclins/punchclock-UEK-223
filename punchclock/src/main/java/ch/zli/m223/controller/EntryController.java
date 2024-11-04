@@ -10,6 +10,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.PUT;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -19,7 +23,6 @@ import ch.zli.m223.service.EntryService;
 @Path("/entries")
 @Tag(name = "Entries", description = "Handling of entries")
 public class EntryController {
-
     @Inject
     EntryService entryService;
 
@@ -35,7 +38,22 @@ public class EntryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new entry.", description = "Creates a new entry and returns the newly added entry.")
     public Entry create(Entry entry) {
-       return entryService.createEntry(entry);
+        return entryService.createEntry(entry);
     }
 
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Updates an entry.", description = "Updates an existing entry and returns the updated entry.")
+    public Entry update(@PathParam("id") Long id, Entry entry) {
+        return entryService.updateEntry(id, entry);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Operation(summary = "Deletes an entry.", description = "Deletes an existing entry.")
+    public void delete(@PathParam("id") Long id) {
+        entryService.deleteEntry(id);
+    }
 }
