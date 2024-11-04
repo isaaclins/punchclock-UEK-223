@@ -1,24 +1,16 @@
 package ch.zli.m223.controller;
 
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import javax.ws.rs.PathParam;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.PUT;
-
+import ch.zli.m223.dto.EntryDTO;
+import ch.zli.m223.model.Entry;
+import ch.zli.m223.service.EntryService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import ch.zli.m223.model.Entry;
-import ch.zli.m223.service.EntryService;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/entries")
 @Tag(name = "Entries", description = "Handling of entries")
@@ -29,16 +21,17 @@ public class EntryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Index all Entries.", description = "Returns a list of all entries.")
-    public List<Entry> index() {
-        return entryService.findAll();
+    public List<EntryDTO> index() {
+        return entryService.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new entry.", description = "Creates a new entry and returns the newly added entry.")
-    public Entry create(Entry entry) {
-        return entryService.createEntry(entry);
+    public EntryDTO create(EntryDTO entryDTO) {
+        Entry entry = toEntity(entryDTO);
+        return toDTO(entryService.createEntry(entry));
     }
 
     @PUT
@@ -46,8 +39,9 @@ public class EntryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Updates an entry.", description = "Updates an existing entry and returns the updated entry.")
-    public Entry update(@PathParam("id") Long id, Entry entry) {
-        return entryService.updateEntry(id, entry);
+    public EntryDTO update(@PathParam("id") Long id, EntryDTO entryDTO) {
+        Entry entry = toEntity(entryDTO);
+        return toDTO(entryService.updateEntry(id, entry));
     }
 
     @DELETE
@@ -55,5 +49,21 @@ public class EntryController {
     @Operation(summary = "Deletes an entry.", description = "Deletes an existing entry.")
     public void delete(@PathParam("id") Long id) {
         entryService.deleteEntry(id);
+    }
+
+    private EntryDTO toDTO(Entry entry) {
+        EntryDTO dto = new EntryDTO();
+        dto.setId(entry.getId());
+        dto.setCheckIn(entry.getCheckIn());
+        dto.setCheckOut(entry.getCheckOut());
+        return dto;
+    }
+
+    private Entry toEntity(EntryDTO dto) {
+        Entry entry = new Entry();
+        entry.setId(dto.getId());
+        entry.setCheckIn(dto.getCheckIn());
+        entry.setCheckOut(dto.getCheckOut());
+        return entry;
     }
 }

@@ -1,13 +1,12 @@
 package ch.zli.m223.service;
 
-import java.util.List;
+import ch.zli.m223.model.Entry;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
-import ch.zli.m223.model.Entry;
+import java.util.List;
 
 @ApplicationScoped
 public class EntryService {
