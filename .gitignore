@@ -2,3 +2,4 @@
 target/classes/privateKey.pem
 target/classes/publicKey.pem
 target/classes/privateKey.pem
+*.pem
