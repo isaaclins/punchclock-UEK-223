@@ -1,0 +1,17 @@
+ch\zli\m223\model\ApplicationUser.class
+ch\zli\m223\service\CategoryService.class
+ch\zli\m223\model\Tag.class
+ch\zli\m223\service\TagService.class
+ch\zli\m223\service\SessionService.class
+ch\zli\m223\service\ApplicationUserService.class
+ch\zli\m223\model\Category.class
+ch\zli\m223\service\TestDataService.class
+ch\zli\m223\model\Credential.class
+ch\zli\m223\controller\ApplicationUserController.class
+ch\zli\m223\model\Entry.class
+ch\zli\m223\service\EntryService.class
+ch\zli\m223\controller\TagController.class
+ch\zli\m223\controller\CategoryController.class
+ch\zli\m223\service\TestTokenService.class
+ch\zli\m223\controller\EntryController.class
+ch\zli\m223\controller\SessionController.class
